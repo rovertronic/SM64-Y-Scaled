@@ -37,6 +37,7 @@
  */
 
 s16 gMatStackIndex;
+u8 sGeoProcessingObjects;
 Mat4 gMatStack[32];
 Mtx *gMatStackFixed[32];
 
@@ -470,11 +471,22 @@ void geo_process_billboard(struct GraphNodeBillboard *node) {
  * parent node. It processes its children if it has them.
  */
 void geo_process_display_list(struct GraphNodeDisplayList *node) {
+    if (!sGeoProcessingObjects) {
+        Mtx *mtx = alloc_display_list(sizeof(*mtx));
+        mtxf_scale_vec3f(gMatStack[gMatStackIndex + 1], gMatStack[gMatStackIndex], gLevelScale);
+        gMatStackIndex++;
+        mtxf_to_mtx(mtx, gMatStack[gMatStackIndex]);
+        gMatStackFixed[gMatStackIndex] = mtx;
+    }
+
     if (node->displayList != NULL) {
         geo_append_display_list(node->displayList, node->node.flags >> 8);
     }
     if (node->node.children != NULL) {
         geo_process_node_and_siblings(node->node.children);
+    }
+    if (!sGeoProcessingObjects) {
+        gMatStackIndex--;
     }
 }
 
@@ -857,6 +869,7 @@ void geo_process_object(struct Object *node) {
  * actual children are be processed. (in practice they are null though)
  */
 void geo_process_object_parent(struct GraphNodeObjectParent *node) {
+    sGeoProcessingObjects = TRUE;
     if (node->sharedChild != NULL) {
         node->sharedChild->parent = (struct GraphNode *) node;
         geo_process_node_and_siblings(node->sharedChild);
@@ -865,6 +878,7 @@ void geo_process_object_parent(struct GraphNodeObjectParent *node) {
     if (node->node.children != NULL) {
         geo_process_node_and_siblings(node->node.children);
     }
+    sGeoProcessingObjects = FALSE;
 }
 
 /**

@@ -32,6 +32,8 @@
 #endif
 #include <prevent_bss_reordering.h>
 
+Vec3f gLevelScale = {1.0f,3.0f,1.0f};
+
 // First 3 controller slots
 struct Controller gControllers[3];
 

@@ -10,6 +10,7 @@
 #include "macro_presets.h"
 
 #include "special_presets.h"
+#include "game_init.h"
 
 /*
  * Converts the rotation value supplied by macro objects into one
@@ -153,7 +154,7 @@ void spawn_macro_objects(s16 areaIndex, s16 *macroObjList) {
                          preset.model,               // Model ID
                          preset.behavior,            // Behavior address
                          macroObject[MACRO_OBJ_X],   // X-position
-                         macroObject[MACRO_OBJ_Y],   // Y-position
+                         macroObject[MACRO_OBJ_Y]*gLevelScale[1],   // Y-position
                          macroObject[MACRO_OBJ_Z],   // Z-position
                          0,                          // X-rotation
                          convert_rotation(macroObject[MACRO_OBJ_Y_ROT]), // Y-rotation
@@ -198,6 +199,8 @@ void spawn_macro_objects_hardcoded(s16 areaIndex, s16 *macroObjList) {
         macroObjY = *macroObjList++;
         macroObjZ = *macroObjList++;
         macroObjRY = *macroObjList++;
+
+        macroObjY *= gLevelScale[1];
 
         // Spawn objects based on hardcoded presets, and most seem to be for Big Boo's Haunt.
         // However, BBH doesn't use this function so this might just be an early test?
@@ -266,6 +269,8 @@ void spawn_special_objects(s16 areaIndex, s16 **specialObjList) {
         (*specialObjList)++;
         z = **specialObjList;
         (*specialObjList)++;
+
+        y*=gLevelScale[1];
 
         offset = 0;
         while (TRUE) {

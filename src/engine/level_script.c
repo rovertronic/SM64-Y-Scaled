@@ -442,7 +442,7 @@ static void level_cmd_place_object(void) {
         spawnInfo = alloc_only_pool_alloc(sLevelPool, sizeof(struct SpawnInfo));
 
         spawnInfo->startPos[0] = CMD_GET(s16, 4);
-        spawnInfo->startPos[1] = CMD_GET(s16, 6);
+        spawnInfo->startPos[1] = CMD_GET(s16, 6) * gLevelScale[1];
         spawnInfo->startPos[2] = CMD_GET(s16, 8);
 
         spawnInfo->startAngle[0] = CMD_GET(s16, 10) * 0x8000 / 180;
@@ -660,6 +660,7 @@ static void level_cmd_set_mario_start_pos(void) {
 #else
     vec3s_copy(gMarioSpawnInfo->startPos, CMD_GET(Vec3s, 6));
 #endif
+    gMarioSpawnInfo->startPos[1] *= gLevelScale[1];
     vec3s_set(gMarioSpawnInfo->startAngle, 0, CMD_GET(s16, 4) * 0x8000 / 180, 0);
 
     sCurrentCmd = CMD_NEXT;

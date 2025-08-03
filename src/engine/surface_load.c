@@ -12,6 +12,7 @@
 #include "game/mario.h"
 #include "game/object_list_processor.h"
 #include "surface_load.h"
+#include "game/game_init.h"
 
 s32 unused8038BE90;
 
@@ -32,6 +33,7 @@ struct Surface *sSurfacePool;
  * The size of the surface pool (2300).
  */
 s16 sSurfacePoolSize;
+u8 sProcessStaticTris;
 
 u8 unused8038EEA8[0x30];
 
@@ -306,21 +308,25 @@ static struct Surface *read_surface_data(s16 *vertexData, s16 **vertexIndices) {
     f32 nx, ny, nz;
     f32 mag;
     s16 offset1, offset2, offset3;
+    f32 scale = 1.0f;
+    if (sProcessStaticTris) {
+        scale = gLevelScale[1];
+    }
 
     offset1 = 3 * (*vertexIndices)[0];
     offset2 = 3 * (*vertexIndices)[1];
     offset3 = 3 * (*vertexIndices)[2];
 
     x1 = *(vertexData + offset1 + 0);
-    y1 = *(vertexData + offset1 + 1);
+    y1 = *(vertexData + offset1 + 1) * scale;
     z1 = *(vertexData + offset1 + 2);
 
     x2 = *(vertexData + offset2 + 0);
-    y2 = *(vertexData + offset2 + 1);
+    y2 = *(vertexData + offset2 + 1) * scale;
     z2 = *(vertexData + offset2 + 2);
 
     x3 = *(vertexData + offset3 + 0);
-    y3 = *(vertexData + offset3 + 1);
+    y3 = *(vertexData + offset3 + 1) * scale;
     z3 = *(vertexData + offset3 + 2);
 
     // (v2 - v1) x (v3 - v2)
@@ -448,6 +454,7 @@ static void load_static_surfaces(s16 **data, s16 *vertexData, s16 surfaceType, s
             (*surfaceRooms)++;
         }
 
+        sProcessStaticTris = TRUE;
         surface = read_surface_data(vertexData, data);
         if (surface != NULL) {
             surface->room = room;
@@ -512,6 +519,7 @@ static void load_environmental_regions(s16 **data) {
         hiZ = *(*data)++;
 
         height = *(*data)++;
+        height *= gLevelScale[1];
 
         gEnvironmentLevels[i] = height;
     }
@@ -724,6 +732,7 @@ void load_object_surfaces(s16 **data, s16 *vertexData) {
     }
 
     for (i = 0; i < numSurfaces; i++) {
+        sProcessStaticTris = FALSE;
         struct Surface *surface = read_surface_data(vertexData, data);
 
         if (surface != NULL) {

@@ -1827,6 +1827,7 @@ void cur_obj_move_standard(s16 steepSlopeAngleDegrees) {
 }
 
 static s32 cur_obj_within_12k_bounds(void) {
+    return TRUE;
     if (o->oPosX < -12000.0f || 12000.0f < o->oPosX) {
         return FALSE;
     }

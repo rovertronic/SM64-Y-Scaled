@@ -315,9 +315,9 @@ f32 find_ceil(f32 posX, f32 posY, f32 posZ, struct Surface **pceil) {
     //! (Parallel Universes) Because position is casted to an s16, reaching higher
     //  float locations can return ceilings despite them not existing there.
     //  (Dynamic ceilings will unload due to the range.)
-    s16 x = (s16) posX;
-    s16 y = (s16) posY;
-    s16 z = (s16) posZ;
+    s32 x = posX;
+    s32 y = posY;
+    s32 z = posZ;
 
     *pceil = NULL;
 
@@ -522,9 +522,9 @@ f32 find_floor(f32 xPos, f32 yPos, f32 zPos, struct Surface **pfloor) {
     //! (Parallel Universes) Because position is casted to an s16, reaching higher
     //  float locations can return floors despite them not existing there.
     //  (Dynamic floors will unload due to the range.)
-    s16 x = (s16) xPos;
-    s16 y = (s16) yPos;
-    s16 z = (s16) zPos;
+    s32 x = (s32) xPos;
+    s32 y = (s32) yPos;
+    s32 z = (s32) zPos;
 
     *pfloor = NULL;
 
@@ -616,7 +616,9 @@ f32 find_water_level(f32 x, f32 z) {
             p++;
         }
     }
-
+    if (waterLevel < -32000) {
+        waterLevel = -32000.0f;
+    }
     return waterLevel;
 }
 

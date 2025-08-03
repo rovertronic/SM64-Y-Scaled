@@ -222,9 +222,9 @@ struct Surface {
     /*0x05*/ s8 room;
     /*0x06*/ s16 lowerY;
     /*0x08*/ s16 upperY;
-    /*0x0A*/ Vec3s vertex1;
-    /*0x10*/ Vec3s vertex2;
-    /*0x16*/ Vec3s vertex3;
+    /*0x0A*/ Vec3i vertex1;
+    /*0x10*/ Vec3i vertex2;
+    /*0x16*/ Vec3i vertex3;
     /*0x1C*/ struct {
         f32 x;
         f32 y;

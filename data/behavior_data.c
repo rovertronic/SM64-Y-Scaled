@@ -3152,6 +3152,7 @@ UNUSED static const BehaviorScript unused_1[] = {
 const BehaviorScript bhvStaticObject[] = {
     BEGIN(OBJ_LIST_DEFAULT),
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    CALL_NATIVE(bhv_static_object_scale),
     BREAK(),
 };
 

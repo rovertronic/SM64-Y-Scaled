@@ -1190,6 +1190,8 @@ s32 init_level(void) {
         if (gCurrentArea != NULL) {
             reset_camera(gCurrentArea->camera);
 
+            set_mario_action(gMarioState, ACT_IDLE, 0);
+            /*
             if (gCurrDemoInput != NULL) {
                 set_mario_action(gMarioState, ACT_IDLE, 0);
             } else if (!gDebugLevelSelect) {
@@ -1202,6 +1204,7 @@ s32 init_level(void) {
                     }
                 }
             }
+            */
         }
 
         if (val4) {

@@ -18,7 +18,7 @@ void bhv_pole_init(void) {
      * `spawn_objects_from_info`.
      */
     s32 tenthHitboxHeight = (o->oBehParams >> 16) & 0xFF;
-    o->hitboxHeight = tenthHitboxHeight * 10;
+    o->hitboxHeight = tenthHitboxHeight * 10 * gLevelScale[1];
 }
 
 /**
