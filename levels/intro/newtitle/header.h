@@ -1,0 +1,15 @@
+extern u8 newtitle_1_rgba16_png_001_rgba16[];
+extern u8 newtitle_0_rgba16_png_001_rgba16[];
+extern Vtx newtitle_intro_seg7_dl_0700B3A0_mesh_002_mesh_vtx_0[754];
+extern Gfx newtitle_intro_seg7_dl_0700B3A0_mesh_002_mesh_tri_0[];
+extern Vtx newtitle_intro_seg7_dl_0700B3A0_mesh_002_mesh_vtx_1[1539];
+extern Gfx newtitle_intro_seg7_dl_0700B3A0_mesh_002_mesh_tri_1[];
+extern Vtx newtitle_intro_seg7_dl_0700B3A0_mesh_002_mesh_vtx_2[706];
+extern Gfx newtitle_intro_seg7_dl_0700B3A0_mesh_002_mesh_tri_2[];
+extern Gfx mat_newtitle_f3dlite_material_005[];
+extern Gfx mat_revert_newtitle_f3dlite_material_005[];
+extern Gfx mat_newtitle_f3dlite_material_006[];
+extern Gfx mat_revert_newtitle_f3dlite_material_006[];
+extern Gfx mat_newtitle_f3dlite_material_007[];
+extern Gfx mat_revert_newtitle_f3dlite_material_007[];
+extern Gfx newtitle_intro_seg7_dl_0700B3A0_mesh_002_mesh[];

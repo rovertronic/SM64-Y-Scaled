@@ -407,7 +407,7 @@ void render_scale_status(void) {
     int whole = gLevelScale[1];
     int dec = ((int)(gLevelScale[1]*10.0f))%10;
     char scaleStr[10];
-    sprintf(scaleStr,"%d?%d*",whole,dec);
+    sprintf(scaleStr,"*%d?%d",whole,dec);
     print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(22), y, scaleStr, gMarioState->pos[1]);
 }
 

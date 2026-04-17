@@ -28,5 +28,7 @@ extern Gfx *intro_seg7_dl_0700B3A0;
 extern Gfx *intro_seg7_dl_0700C6A0;
 extern f32 intro_seg7_table_0700C790[];
 extern f32 intro_seg7_table_0700C880[];
+extern Gfx newtitle_intro_seg7_dl_0700B3A0_mesh_002_mesh[];
+extern Gfx rogo_rogo_mesh[];
 
 #endif // SEGMENT7_H
