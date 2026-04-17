@@ -7,6 +7,7 @@
 #include "game/object_list_processor.h"
 #include "surface_collision.h"
 #include "surface_load.h"
+#include "game/game_init.h"
 
 /**************************************************
  *                      WALLS                     *
@@ -133,6 +134,10 @@ static s32 find_wall_collisions_from_list(struct SurfaceNode *surfaceNode,
                     continue;
                 }
             }
+        }
+
+        if (surf->type == SURFACE_DEATH_PLANE && gLevelScale[1] <= 0.0f) {
+            continue;
         }
 
         //! (Wall Overlaps) Because this doesn't update the x and z local variables,

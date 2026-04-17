@@ -501,7 +501,9 @@ static void load_environmental_regions(s16 **data) {
     s32 numRegions;
     s32 i;
 
-    gEnvironmentRegions = *data;
+    if (gLevelScale[1] > 0.0f) {
+        gEnvironmentRegions = *data;
+    }
     numRegions = *(*data)++;
 
     if (numRegions > 20) {
@@ -518,8 +520,8 @@ static void load_environmental_regions(s16 **data) {
         loZ = *(*data)++;
         hiZ = *(*data)++;
 
+        (**data) *= gLevelScale[1];
         height = *(*data)++;
-        height *= gLevelScale[1];
 
         gEnvironmentLevels[i] = height;
     }

@@ -401,6 +401,16 @@ void render_hud_camera_status(void) {
     gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
 }
 
+void render_scale_status(void) {
+    s32 y = 20;
+
+    int whole = gLevelScale[1];
+    int dec = ((int)(gLevelScale[1]*10.0f))%10;
+    char scaleStr[10];
+    sprintf(scaleStr,"%d?%d*",whole,dec);
+    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(22), y, scaleStr, gMarioState->pos[1]);
+}
+
 /**
  * Render HUD strings using hudDisplayFlags with it's render functions,
  * excluding the cannon reticle which detects a camera preset for it.
@@ -454,6 +464,8 @@ void render_hud(void) {
             render_hud_power_meter();
             render_hud_camera_status();
         }
+
+        render_scale_status();
 
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_TIMER) {
             render_hud_timer();
