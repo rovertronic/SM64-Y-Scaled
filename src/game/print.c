@@ -331,7 +331,7 @@ s8 char_to_glyph_index(char c) {
     }
 
     if (c == '-') {
-        return GLYPH_STAR; // star
+        return GLYPH_MINUS; // star
     }
 
     if (c == '.') {

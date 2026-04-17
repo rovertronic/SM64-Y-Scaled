@@ -59,6 +59,7 @@ build/*
 /sound/**/*.m64
 /sound/**/*.aiff
 !/textures/segment2/segment2.05000.rgba16.png
+!/textures/segment2/segment2.minus.rgba16.png
 !/levels/**/*custom*.png
 !/levels/**/*custom*/**/*.png
 !/actors/**/*custom*.png

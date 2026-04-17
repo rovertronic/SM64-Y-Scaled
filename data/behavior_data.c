@@ -15,6 +15,7 @@
 
 #include "actors/common0.h"
 #include "actors/common1.h"
+#include "actors/group0.h"
 #include "actors/group1.h"
 #include "actors/group2.h"
 #include "actors/group3.h"
@@ -6108,4 +6109,13 @@ const BehaviorScript bhvIntroScene[] = {
     END_LOOP(),
 };
 
-
+void bhv_no_invis(void);
+const BehaviorScript bhvNoInvis[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, (OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    LOAD_COLLISION_DATA(noInvis_collision),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_no_invis),
+        CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+};

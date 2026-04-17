@@ -1874,6 +1874,10 @@ void init_mario(void) {
 
         capObject->oMoveAngleYaw = 0;
     }
+
+    if (gLevelScale[1] <= 0.0f) {
+        spawn_object(gMarioState->marioObj, MODEL_NONE, bhvNoInvis);
+    }
 }
 
 void init_mario_from_save_file(void) {

@@ -136,10 +136,6 @@ static s32 find_wall_collisions_from_list(struct SurfaceNode *surfaceNode,
             }
         }
 
-        if (surf->type == SURFACE_DEATH_PLANE && gLevelScale[1] <= 0.0f) {
-            continue;
-        }
-
         //! (Wall Overlaps) Because this doesn't update the x and z local variables,
         //  multiple walls can push mario more than is required.
         data->x += surf->normal.x * (radius - offset);
@@ -462,6 +458,10 @@ static struct Surface *find_floor_from_list(struct SurfaceNode *surfaceNode, s32
         height = -(x * nx + nz * z + oo) / ny;
         // Checks for floor interaction with a 78 unit buffer.
         if (y - (height + -78.0f) < 0.0f) {
+            continue;
+        }
+
+        if (surf->type == SURFACE_DEATH_PLANE && gLevelScale[1] <= 0.0f) {
             continue;
         }
 

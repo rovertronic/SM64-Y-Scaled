@@ -18,7 +18,8 @@
 #define GLYPH_MULTIPLY        50
 #define GLYPH_COIN            51
 #define GLYPH_MARIO_HEAD      52
-#define GLYPH_STAR            53
+#define GLYPH_STAR            '&'+1
+#define GLYPH_MINUS           53
 #define GLYPH_PERIOD          54
 #define GLYPH_BETA_KEY        55
 #define GLYPH_APOSTROPHE      56

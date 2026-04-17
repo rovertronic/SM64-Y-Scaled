@@ -850,3 +850,9 @@ UNUSED s8 debug_sequence_tracker(s16 debugInputSequence[]) {
 #include "behaviors/treasure_chest.inc.c"
 #include "behaviors/mips.inc.c"
 #include "behaviors/yoshi.inc.c"
+
+void bhv_no_invis(void) {
+    o->oPosX = gMarioState->pos[0];
+    o->oPosY = gMarioState->pos[1];
+    o->oPosZ = gMarioState->pos[2];
+}

@@ -297,7 +297,7 @@ void render_hud_stars(void) {
         showX = 1;
     }
 
-    print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X), HUD_TOP_Y, "-"); // 'Star' glyph
+    print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X), HUD_TOP_Y, "&"); // 'Star' glyph
     if (showX == 1) {
         print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X) + 16, HUD_TOP_Y, "*"); // 'X' glyph
     }
@@ -402,7 +402,7 @@ void render_hud_camera_status(void) {
 }
 
 void render_scale_status(void) {
-    s32 y = 20;
+    s32 y = 19;
 
     int whole = gLevelScale[1];
     int dec = ((int)(gLevelScale[1]*10.0f))%10;
