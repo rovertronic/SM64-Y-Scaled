@@ -19,6 +19,7 @@
 #include "platform_displacement.h"
 #include "profiler.h"
 #include "spawn_object.h"
+#include "game_init.h"
 
 
 /**
@@ -505,6 +506,23 @@ void spawn_objects_from_info(UNUSED s32 unused, struct SpawnInfo *spawnInfo) {
             object->oPosX = spawnInfo->startPos[0];
             object->oPosY = spawnInfo->startPos[1];
             object->oPosZ = spawnInfo->startPos[2];
+
+            if (gLevelScale[1] < 0.0f) {
+                struct Object * floor;
+                find_floor(object->oPosX,99999,object->oPosZ,&floor);
+
+                if (floor) {
+                    find_floor(object->oPosX,object->oPosY,object->oPosZ,&floor);
+                    s32 totalYtally = 0;
+                    while (floor == NULL) {
+                        object->oPosY += 10;
+                        totalYtally += 10;
+                        find_floor(object->oPosX,object->oPosY,object->oPosZ,&floor);
+                    }
+                    object->oPosY += totalYtally;
+                }
+            }
+
 
             object->oFaceAnglePitch = spawnInfo->startAngle[0];
             object->oFaceAngleYaw = spawnInfo->startAngle[1];
