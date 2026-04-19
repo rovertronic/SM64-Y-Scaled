@@ -24,6 +24,7 @@
 #include "math_util.h"
 #include "surface_collision.h"
 #include "surface_load.h"
+#include "game/ingame_menu.h"
 
 #define CMD_GET(type, offset) (*(type *) (CMD_PROCESS_OFFSET(offset) + (u8 *) sCurrentCmd))
 
@@ -306,6 +307,11 @@ static void level_cmd_init_level(void) {
     clear_objects();
     clear_areas();
     main_pool_push_state();
+
+    if (gYScaledMenuYOption != gYScaledMenuYOptionOld) {
+        gLevelScale[1] = gYScaledMenuYOption * .05f;
+        gYScaledMenuYOptionOld = gYScaledMenuYOption;
+    }
 
     sCurrentCmd = CMD_NEXT;
 }

@@ -523,7 +523,7 @@ static void load_environmental_regions(s16 **data) {
         (**data) *= gLevelScale[1];
         height = *(*data)++;
 
-        gEnvironmentLevels[i] = height;
+        gEnvironmentLevels[i] = height * gLevelScale[1];
     }
 }
 

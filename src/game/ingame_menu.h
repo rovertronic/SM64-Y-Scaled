@@ -132,6 +132,10 @@ extern s16 gCutsceneMsgXOffset;
 extern s16 gCutsceneMsgYOffset;
 extern s8 gRedCoinsCollected;
 
+extern s32 gYscaledMenuOpen;
+extern s32 gYScaledMenuYOption;
+extern s32 gYScaledMenuYOptionOld;
+
 void create_dl_identity_matrix(void);
 void create_dl_translation_matrix(s8 pushOp, f32 x, f32 y, f32 z);
 void create_dl_ortho_matrix(void);
@@ -166,5 +170,7 @@ void do_cutscene_handler(void);
 void render_hud_cannon_reticle(void);
 void reset_red_coins_collected(void);
 s16 render_menus_and_dialogs(void);
+void print_generic_string_ascii(s16 x, s16 y, const char *str);
+void render_y_scaled_menu(void);
 
 #endif // INGAME_MENU_H

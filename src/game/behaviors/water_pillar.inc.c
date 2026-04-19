@@ -79,6 +79,8 @@ void bhv_water_level_pillar_loop(void) {
     } else {
         water_level_pillar_undrained();
     }
-    gEnvironmentRegions[18] = gEnvironmentLevels[2];
-    gEnvironmentRegions[6] = gEnvironmentLevels[0];
+    if (gLevelScale[1] > 0.0f) {
+        gEnvironmentRegions[18] = gEnvironmentLevels[2];
+        gEnvironmentRegions[6] = gEnvironmentLevels[0];
+    }
 }

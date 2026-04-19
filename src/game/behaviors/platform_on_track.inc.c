@@ -90,7 +90,7 @@ static void platform_on_track_act_init(void) {
     o->oPlatformOnTrackBaseBallIndex = 0;
 
     o->oPosX = o->oHomeX = o->oPlatformOnTrackStartWaypoint->pos[0];
-    o->oPosY = o->oHomeY = o->oPlatformOnTrackStartWaypoint->pos[1];
+    o->oPosY = o->oHomeY = o->oPlatformOnTrackStartWaypoint->pos[1] * gLevelScale[1];
     o->oPosZ = o->oHomeZ = o->oPlatformOnTrackStartWaypoint->pos[2];
 
     o->oFaceAngleYaw = o->oBehParams2ndByte;

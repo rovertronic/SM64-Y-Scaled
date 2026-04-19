@@ -907,7 +907,7 @@ Gfx *render_painting(u8 *img, s16 tWidth, s16 tHeight, s16 *textureMap, s16 mapV
  * Orient the painting mesh for rendering.
  */
 Gfx *painting_model_view_transform(struct Painting *painting) {
-    f32 sizeRatio = painting->size / PAINTING_SIZE;
+    f32 sizeRatio = (painting->size / PAINTING_SIZE);
     Mtx *rotX = alloc_display_list(sizeof(Mtx));
     Mtx *rotY = alloc_display_list(sizeof(Mtx));
     Mtx *translate = alloc_display_list(sizeof(Mtx));
@@ -918,10 +918,10 @@ Gfx *painting_model_view_transform(struct Painting *painting) {
     if (rotX == NULL || rotY == NULL || translate == NULL || dlist == NULL) {
     }
 
-    guTranslate(translate, painting->posX, painting->posY, painting->posZ);
+    guTranslate(translate, painting->posX, painting->posY * gLevelScale[1], painting->posZ);
     guRotate(rotX, painting->pitch, 1.0f, 0.0f, 0.0f);
     guRotate(rotY, painting->yaw, 0.0f, 1.0f, 0.0f);
-    guScale(scale, sizeRatio, sizeRatio, sizeRatio);
+    guScale(scale, sizeRatio, sizeRatio * gLevelScale[1], sizeRatio);
 
     gSPMatrix(gfx++, translate, G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
     gSPMatrix(gfx++, rotX,      G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_NOPUSH);

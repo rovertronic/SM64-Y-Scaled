@@ -629,6 +629,10 @@ void initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 arg3) {
         sWarpDest.type = WARP_TYPE_SAME_AREA;
     }
 
+    if (gYScaledMenuYOption != gYScaledMenuYOptionOld) {
+        sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
+    }
+
     sWarpDest.levelNum = destLevel;
     sWarpDest.areaIdx = destArea;
     sWarpDest.nodeId = destWarpNode;
@@ -1002,6 +1006,7 @@ s32 play_mode_normal(void) {
         } else if (sTransitionTimer != 0) {
             set_play_mode(PLAY_MODE_CHANGE_AREA);
         } else if (pressed_pause()) {
+            gYscaledMenuOpen = FALSE;
             lower_background_noise(1);
 #if ENABLE_RUMBLE
             cancel_rumble();

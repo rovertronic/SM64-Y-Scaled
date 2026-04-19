@@ -40,6 +40,8 @@ s16 gCutsceneMsgXOffset;
 s16 gCutsceneMsgYOffset;
 s8 gRedCoinsCollected;
 
+s32 gYscaledMenuOpen = TRUE;
+
 extern u8 gLastCompletedCourseNum;
 extern u8 gLastCompletedStarNum;
 
@@ -113,7 +115,6 @@ s8 gLastDialogResponse = 0;
 u8 gMenuHoldKeyIndex = 0;
 u8 gMenuHoldKeyTimer = 0;
 s32 gDialogResponse = DIALOG_RESPONSE_NONE;
-
 
 void create_dl_identity_matrix(void) {
     Mtx *matrix = (Mtx *) alloc_display_list(sizeof(Mtx));
@@ -2601,6 +2602,15 @@ s8 gHudFlash = 0;
 s16 render_pause_courses_and_castle(void) {
     s16 index;
 
+    if (gPlayer3Controller->buttonPressed & (R_TRIG)) {
+        gYscaledMenuOpen = TRUE;
+    }
+
+    if (gYscaledMenuOpen) {
+        render_y_scaled_menu();
+        return MENU_OPT_NONE;
+    }
+
 #ifdef VERSION_EU
     gInGameLanguage = eu_get_language();
 #endif
@@ -2674,6 +2684,13 @@ s16 render_pause_courses_and_castle(void) {
             }
             break;
     }
+
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, gDialogTextAlpha);
+    print_generic_string_ascii(20,179,"R: Y-Scaled Menu");
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
+    print_generic_string_ascii(20,180,"R: Y-Scaled Menu");
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 
     if (gDialogTextAlpha < 250) {
         gDialogTextAlpha += 25;
@@ -3087,4 +3104,160 @@ s16 render_menus_and_dialogs(void) {
     }
 
     return index;
+}
+
+u8 mb64_ascii_lut[] = {
+    0,0,0,0,0,0,0,0, // 0 - 7
+    0,0,0xFE,0,0,0,0,0, // 8 - 15
+    0x54,0x55,0x57,0x58,0x56,0x59,0,0, // 16 - 23
+    0,0,0,0,0,0,0,0, // 24 - 31
+    0x9E, /* */ 0xF2, /*!*/ 0xF6, /*"*/ 0xFA, /*#*/
+    0xF9, /*$*/ 0xF3, /*%*/ 0xE5, /*&*/ 0x3E, /*'*/
+    0xE1, /*(*/ 0xE3, /*)*/ 0x00, /***/ 0xE8, /*+*/
+    0x6F, /*,*/ 0x9F, /*-*/ 0x3F, /*.*/ 0x70, /*/*/
+    0x00, /*0*/ 0x01, /*1*/ 0x02, /*2*/ 0x03, /*3*/
+    0x04, /*4*/ 0x05, /*5*/ 0x06, /*6*/ 0x07, /*7*/
+    0x08, /*8*/ 0x09, /*9*/ 0xE6, /*:*/ 0x00, /*;*/
+    0x52, /*<*/ 0xE9, /*=*/ 0x53, /*>*/ 0xF4, /*?*/
+    0xFD, /*@*/ 0x0A, /*A*/ 0x0B, /*B*/ 0x0C, /*C*/
+    0x0D, /*D*/ 0x0E, /*E*/ 0x0F, /*F*/ 0x10, /*G*/
+    0x11, /*H*/ 0x12, /*I*/ 0x13, /*J*/ 0x14, /*K*/
+    0x15, /*L*/ 0x16, /*M*/ 0x17, /*N*/ 0x18, /*O*/
+    0x19, /*P*/ 0x1A, /*Q*/ 0x1B, /*R*/ 0x1C, /*S*/
+    0x1D, /*T*/ 0x1E, /*U*/ 0x1F, /*V*/ 0x20, /*W*/
+    0x21, /*X*/ 0x22, /*Y*/ 0x23, /*Z*/ 0x00, /*[*/
+    0x00, /*\*/ 0x00, /*]*/ 0x50, /*^*/ 0xE7, /*_*/
+    0x00, /*`*/ 0x24, /*a*/ 0x25, /*b*/ 0x26, /*c*/
+    0x27, /*d*/ 0x28, /*e*/ 0x29, /*f*/ 0x2A, /*g*/
+    0x2B, /*h*/ 0x2C, /*i*/ 0x2D, /*j*/ 0x2E, /*k*/
+    0x2F, /*l*/ 0x30, /*m*/ 0x31, /*n*/ 0x32, /*o*/
+    0x33, /*p*/ 0x34, /*q*/ 0x35, /*r*/ 0x36, /*s*/
+    0x37, /*t*/ 0x38, /*u*/ 0x39, /*v*/ 0x3A, /*w*/
+    0x3B, /*x*/ 0x3C, /*y*/ 0x3D, /*z*/ 0x00, /*{*/
+    0x51, /*|*/ 0x00, /*}*/ 0x00, /*~*/
+};
+
+extern u8 mb64_ascii_lut[];
+void print_generic_string_ascii(s16 x, s16 y, const char *str) {
+    s32 strPos = 0;
+    u8 lineNum = 1;
+
+    create_dl_translation_matrix(MENU_MTX_PUSH, x, y, 0.0f);
+
+    while (str[strPos] != 0) {
+        switch(str[strPos]) {
+            case ' ':
+                create_dl_translation_matrix(MENU_MTX_NOPUSH, CHAR_WIDTH_SPACE, 0.0f, 0.0f);
+            break;
+            case '\n':
+                gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+                create_dl_translation_matrix(MENU_MTX_PUSH, x, y - (lineNum * MAX_STRING_WIDTH), 0.0f);
+                lineNum++;
+            break;
+            default:
+                render_generic_char(mb64_ascii_lut[(u8)str[strPos]]);
+                create_dl_translation_matrix(MENU_MTX_NOPUSH, gDialogCharWidths[mb64_ascii_lut[(u8)str[strPos]]], 0.0f, 0.0f);
+            break;
+        }
+        strPos++;
+    }
+
+    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+}
+
+s8 sYScaledMenuIndex = 0;
+s32 sYScaledLeftTimer = 0;
+s32 sYScaledRightTimer = 0;
+
+s32 gYScaledMenuYOption = 20;
+s32 gYScaledMenuYOptionOld = 20; // Used to check for change
+
+s32 * sYScaledChangeVariable = &gYScaledMenuYOption;
+void init_y_scaled_menu(void) {
+
+}
+
+
+
+void render_y_scaled_menu(void) {
+    // Control Vertical
+    handle_menu_scrolling(MENU_SCROLL_VERTICAL, &sYScaledMenuIndex, 0, 1);
+
+    switch(sYScaledMenuIndex) {
+        case 0:
+            sYScaledChangeVariable = NULL;
+            break;
+        case 1:
+            sYScaledChangeVariable = &gYScaledMenuYOption;
+            break;
+    }
+
+    // Control Horizontal
+    sYScaledLeftTimer++;
+    sYScaledRightTimer++;
+    if (gPlayer3Controller->rawStickX < 30) {
+        sYScaledRightTimer = 0;
+    }
+    if (gPlayer3Controller->rawStickX > -30) {
+        sYScaledLeftTimer = 0;
+    }
+    if (sYScaledChangeVariable != NULL) {
+        if (sYScaledLeftTimer == 1 || sYScaledLeftTimer > 15) {
+            (*sYScaledChangeVariable) --;
+            play_sound(SOUND_MENU_CHANGE_SELECT, gGlobalSoundSource);
+        }
+        if (sYScaledRightTimer == 1 || sYScaledRightTimer > 15) {
+            (*sYScaledChangeVariable) ++;
+            play_sound(SOUND_MENU_CHANGE_SELECT, gGlobalSoundSource);
+        }
+        if (sYScaledRightTimer > 60) {
+            (*sYScaledChangeVariable) ++;
+        }
+        if (sYScaledLeftTimer > 60) {
+            (*sYScaledChangeVariable) --;
+        }
+    }
+
+    // Control Confirm
+    if (gPlayer3Controller->buttonPressed & (A_BUTTON | START_BUTTON)) {
+        switch(sYScaledMenuIndex) {
+            case 0:
+                if (gYScaledMenuYOption != gYScaledMenuYOptionOld) {
+                    u8 node = 0x0A;
+                    switch(gCurrLevelNum) {
+                        case LEVEL_CASTLE_GROUNDS:
+                        case LEVEL_CASTLE:
+                            node = 0;
+                            break;
+                    }
+                    initiate_warp(gCurrLevelNum, 1, node, 0);
+                    //level_set_transition(2, NULL);
+                    fade_into_special_warp(0, 0);
+
+                    gDialogBoxState = DIALOG_STATE_OPENING;
+                    gMenuMode = MENU_MODE_NONE;
+                } else {
+                    gYscaledMenuOpen = FALSE;
+                }
+            break;
+        }
+    }
+
+    //Render
+    shade_screen();
+
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    print_generic_string_ascii(120,120,"Return");
+
+    char scaleStr[100];
+    f32 displayFloat = gYScaledMenuYOption * .05f;
+    sprintf(scaleStr,"Y Scale: %.2f",displayFloat);
+    print_generic_string_ascii(120,100,scaleStr);
+
+    create_dl_translation_matrix(MENU_MTX_PUSH, 100, 120 - (sYScaledMenuIndex * 20), 0);
+
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+    gSPDisplayList(gDisplayListHead++, dl_draw_triangle);
+
+    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
 }

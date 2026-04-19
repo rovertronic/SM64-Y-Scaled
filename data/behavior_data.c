@@ -2191,6 +2191,7 @@ const BehaviorScript bhvDddWarp[] = {
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
     SET_FLOAT(oCollisionDistance, 30000),
     BEGIN_LOOP(),
+        CALL_NATIVE(bhv_static_object_scale),
         CALL_NATIVE(bhv_ddd_warp_loop),
         CALL_NATIVE(load_object_collision_model),
     END_LOOP(),

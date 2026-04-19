@@ -1,7 +1,7 @@
 // falling_rising_platform.inc.c
 
 void bhv_squishable_platform_loop(void) {
-    o->header.gfx.scale[1] = (sins(o->oBitfsPlatformTimer) + 1.0) * 0.3 + 0.4;
+    o->header.gfx.scale[1] = ((sins(o->oBitfsPlatformTimer) + 1.0) * 0.3 + 0.4) * gLevelScale[1];
     o->oBitfsPlatformTimer += 0x80;
 }
 

@@ -188,7 +188,7 @@ static void platform_on_track_update_pos_or_spawn_ball(s32 ballIndex, f32 x, f32
             }
 
             dx = nextWaypoint->pos[0] - x;
-            dy = nextWaypoint->pos[1] - y;
+            dy = (nextWaypoint->pos[1] * gLevelScale[1]) - y;
             dz = nextWaypoint->pos[2] - z;
 
             distToNextWaypoint = sqrtf(dx * dx + dy * dy + dz * dz);

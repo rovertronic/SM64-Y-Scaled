@@ -21,14 +21,14 @@ void bhv_donut_platform_spawner_update(void) {
     for (i = 0, platformFlag = 1; i < ARRAY_COUNT(sDonutPlatformPositions); i++, platformFlag = platformFlag << 1) {
         if (!(o->oDonutPlatformSpawnerSpawnedPlatforms & platformFlag)) {
             f32 dx = gMarioObject->oPosX - sDonutPlatformPositions[i][0];
-            f32 dy = gMarioObject->oPosY - sDonutPlatformPositions[i][1];
+            f32 dy = gMarioObject->oPosY - (sDonutPlatformPositions[i][1] * gLevelScale[1]);
             f32 dz = gMarioObject->oPosZ - sDonutPlatformPositions[i][2];
             f32 marioSqDist = dx * dx + dy * dy + dz * dz;
 
             // dist > 1000 and dist < 2000
             if (marioSqDist > 1000000.0f && marioSqDist < 4000000.0f) {
                 if (spawn_object_relative(i, sDonutPlatformPositions[i][0],
-                                          sDonutPlatformPositions[i][1], sDonutPlatformPositions[i][2],
+                                          sDonutPlatformPositions[i][1] * gLevelScale[1], sDonutPlatformPositions[i][2],
                                           o, MODEL_RR_DONUT_PLATFORM, bhvDonutPlatform) != NULL) {
                     o->oDonutPlatformSpawnerSpawnedPlatforms |= platformFlag;
                 }
