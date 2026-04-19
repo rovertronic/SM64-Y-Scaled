@@ -3098,6 +3098,30 @@ void update_camera(struct Camera *c) {
                 default:
                     mode_mario_camera(c);
             }
+        } else if (gYscaledMenuCameraOption) {
+            if (c->mode == CAMERA_MODE_FREE_ROAM) {
+                c->mode = CAMERA_MODE_8_DIRECTIONS;
+            }
+            switch (c->mode) {
+                case CAMERA_MODE_BEHIND_MARIO:
+                    mode_behind_mario_camera(c);
+                    break;
+
+                case CAMERA_MODE_C_UP:
+                    mode_c_up_camera(c);
+                    break;
+
+                case CAMERA_MODE_WATER_SURFACE:
+                    mode_water_surface_camera(c);
+                    break;
+
+                case CAMERA_MODE_INSIDE_CANNON:
+                    mode_cannon_camera(c);
+                    break;
+
+                default:
+                    mode_8_directions_camera(c);
+            }
         } else {
             switch (c->mode) {
                 case CAMERA_MODE_BEHIND_MARIO:

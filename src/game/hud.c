@@ -404,11 +404,15 @@ void render_hud_camera_status(void) {
 void render_scale_status(void) {
     s32 y = 19;
 
-    int whole = gLevelScale[1];
-    int dec = ((int)(gLevelScale[1]*10.0f))%10;
-    int dec2 = ((int)(gLevelScale[1]*100.0f))%10;
+    int whole = ABS(gLevelScale[1]);
+    int dec = ABS(((int)(gLevelScale[1]*10.0f))%10);
+    int dec2 = ABS(((int)(gLevelScale[1]*100.0f))%10);
+    char * minusStr = "";
+    if (gLevelScale[1] < 0.0f) {
+        minusStr = "-";
+    }
     char scaleStr[10];
-    sprintf(scaleStr,"*%d?%d%d",whole,dec,dec2);
+    sprintf(scaleStr,"*%s%d?%d%d",minusStr,whole,dec,dec2);
     print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(22), y, scaleStr, gMarioState->pos[1]);
 }
 

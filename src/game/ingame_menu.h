@@ -135,6 +135,7 @@ extern s8 gRedCoinsCollected;
 extern s32 gYscaledMenuOpen;
 extern s32 gYScaledMenuYOption;
 extern s32 gYScaledMenuYOptionOld;
+extern s32 gYscaledMenuCameraOption;
 
 void create_dl_identity_matrix(void);
 void create_dl_translation_matrix(s8 pushOp, f32 x, f32 y, f32 z);

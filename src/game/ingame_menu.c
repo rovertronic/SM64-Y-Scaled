@@ -3168,6 +3168,7 @@ void print_generic_string_ascii(s16 x, s16 y, const char *str) {
 s8 sYScaledMenuIndex = 0;
 s32 sYScaledLeftTimer = 0;
 s32 sYScaledRightTimer = 0;
+s32 gYscaledMenuCameraOption = 0;
 
 s32 gYScaledMenuYOption = 20;
 s32 gYScaledMenuYOptionOld = 20; // Used to check for change
@@ -3181,7 +3182,7 @@ void init_y_scaled_menu(void) {
 
 void render_y_scaled_menu(void) {
     // Control Vertical
-    handle_menu_scrolling(MENU_SCROLL_VERTICAL, &sYScaledMenuIndex, 0, 1);
+    handle_menu_scrolling(MENU_SCROLL_VERTICAL, &sYScaledMenuIndex, 0, 2);
 
     switch(sYScaledMenuIndex) {
         case 0:
@@ -3189,6 +3190,9 @@ void render_y_scaled_menu(void) {
             break;
         case 1:
             sYScaledChangeVariable = &gYScaledMenuYOption;
+            break;
+        case 2:
+            sYScaledChangeVariable = &gYscaledMenuCameraOption;
             break;
     }
 
@@ -3249,10 +3253,18 @@ void render_y_scaled_menu(void) {
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     print_generic_string_ascii(120,120,"Return");
 
-    char scaleStr[100];
+    char str[100];
     f32 displayFloat = gYScaledMenuYOption * .05f;
-    sprintf(scaleStr,"Y Scale: %.2f",displayFloat);
-    print_generic_string_ascii(120,100,scaleStr);
+    sprintf(str,"Y Scale: %.2f",displayFloat);
+    print_generic_string_ascii(120,100,str);
+
+    char * toggleStr = "Off";
+    if (gYscaledMenuCameraOption) {
+        toggleStr = "On";
+    }
+
+    sprintf(str,"Parallel Lakitu Cam: %s",toggleStr);
+    print_generic_string_ascii(120,80,str);
 
     create_dl_translation_matrix(MENU_MTX_PUSH, 100, 120 - (sYScaledMenuIndex * 20), 0);
 
