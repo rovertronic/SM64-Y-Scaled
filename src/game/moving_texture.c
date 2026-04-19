@@ -13,6 +13,7 @@
 #include "geo_misc.h"
 #include "rendering_graph_node.h"
 #include "object_list_processor.h"
+#include "game_init.h"
 
 /**
  * This file contains functions for generating display lists with moving textures
@@ -768,7 +769,7 @@ void movtex_write_vertex_index(Vtx *verts, s32 index, s16 *movtexVerts, struct M
     switch (attrLayout) {
         case MOVTEX_LAYOUT_NOCOLOR:
             x = movtexVerts[index * 5 + MOVTEX_ATTR_X];
-            y = movtexVerts[index * 5 + MOVTEX_ATTR_Y];
+            y = movtexVerts[index * 5 + MOVTEX_ATTR_Y] * gLevelScale[1];
             z = movtexVerts[index * 5 + MOVTEX_ATTR_Z];
             baseS = movtexVerts[MOVTEX_ATTR_NOCOLOR_S];
             baseT = movtexVerts[MOVTEX_ATTR_NOCOLOR_T];
@@ -783,7 +784,7 @@ void movtex_write_vertex_index(Vtx *verts, s32 index, s16 *movtexVerts, struct M
             break;
         case MOVTEX_LAYOUT_COLORED:
             x = movtexVerts[index * 8 + MOVTEX_ATTR_X];
-            y = movtexVerts[index * 8 + MOVTEX_ATTR_Y];
+            y = movtexVerts[index * 8 + MOVTEX_ATTR_Y] * gLevelScale[1];
             z = movtexVerts[index * 8 + MOVTEX_ATTR_Z];
             baseS = movtexVerts[7];
             baseT = movtexVerts[8];
