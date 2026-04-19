@@ -3178,7 +3178,7 @@ void init_y_scaled_menu(void) {
 
 }
 
-
+#define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
 
 void render_y_scaled_menu(void) {
     // Control Vertical
@@ -3222,6 +3222,8 @@ void render_y_scaled_menu(void) {
         }
     }
 
+    gYscaledMenuCameraOption = CLAMP(gYscaledMenuCameraOption,0,1);
+
     // Control Confirm
     if (gPlayer3Controller->buttonPressed & (A_BUTTON | START_BUTTON)) {
         switch(sYScaledMenuIndex) {
@@ -3254,8 +3256,12 @@ void render_y_scaled_menu(void) {
     print_generic_string_ascii(120,120,"Return");
 
     char str[100];
+    char * unstableStr = "";
+    if (ABS(gYScaledMenuYOption) > 100) {
+        unstableStr = " (WARNING: Unstable)";
+    }
     f32 displayFloat = gYScaledMenuYOption * .05f;
-    sprintf(str,"Y Scale: %.2f",displayFloat);
+    sprintf(str,"Y Scale: %.2f%s",displayFloat,unstableStr);
     print_generic_string_ascii(120,100,str);
 
     char * toggleStr = "Off";

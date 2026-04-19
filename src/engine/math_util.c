@@ -5,6 +5,7 @@
 #include "math_util.h"
 #include "surface_collision.h"
 #include "game/game_init.h"
+#include "game/camera.h"
 
 #include "trig_tables.inc.c"
 
@@ -578,7 +579,7 @@ void mtxf_to_mtx(Mtx *dest, Mat4 src) {
     register s16 *t0 = (s16 *) dest + 16; // all fraction parts stored in last 16 bytes
     register f32 *t1 = (f32 *) src;
 
-    f32 worldScale = MAX(gLevelScale[1],1.0f);
+    f32 worldScale = MAX(ABS(gLevelScale[1]),1.0f);
 
     for (i = 0; i < 16; i++) {
         asFixedPoint = (*t1++ * (1 << 16)) / worldScale; //! float-to-integer conversion responsible for PU crashes
