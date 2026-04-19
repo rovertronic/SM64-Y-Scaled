@@ -3232,8 +3232,10 @@ void render_y_scaled_menu(void) {
                     u8 node = 0x0A;
                     switch(gCurrLevelNum) {
                         case LEVEL_CASTLE_GROUNDS:
-                        case LEVEL_CASTLE:
                             node = 0;
+                            break;
+                        case LEVEL_CASTLE:
+                            node = 0x20;
                             break;
                     }
                     initiate_warp(gCurrLevelNum, 1, node, 0);
