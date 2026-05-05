@@ -139,7 +139,7 @@ ifeq ($(NON_MATCHING),1)
 endif
 
 
-TARGET_STRING := sm64yscaled2
+TARGET_STRING := SM64_Y-Scaled
 
 # UNF - whether to use UNFLoader flashcart library
 #   1 - includes code in ROM
