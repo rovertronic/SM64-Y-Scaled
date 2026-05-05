@@ -1706,6 +1706,7 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         mario_handle_special_floors(gMarioState);
         mario_process_interactions(gMarioState);
 
+        /*
         if (
             (gMarioState->controller->buttonDown & U_JPAD) &&
             !(gMarioState->controller->buttonDown & L_TRIG)
@@ -1713,6 +1714,7 @@ s32 execute_mario_action(UNUSED struct Object *o) {
             set_camera_mode(gMarioState->area->camera, CAMERA_MODE_8_DIRECTIONS, 1);
             set_mario_action(gMarioState, ACT_DEBUG_FREE_MOVE, 0);
         }
+        */
 
         // If Mario is OOB, stop executing actions.
         if (gMarioState->floor == NULL) {

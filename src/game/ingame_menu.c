@@ -3259,7 +3259,7 @@ void render_y_scaled_menu(void) {
 
     char str[100];
     char * unstableStr = "";
-    if (ABS(gYScaledMenuYOption) > 100) {
+    if (ABS(gYScaledMenuYOption) > 80) {
         unstableStr = " (WARNING: Unstable)";
     }
     f32 displayFloat = gYScaledMenuYOption * .05f;
