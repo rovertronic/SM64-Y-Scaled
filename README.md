@@ -1,3 +1,8 @@
+# SM64 Y-Scaled
+This hack allows you to squash, stretch, and even invert the vanilla SM64 courses on the Y-axis to your liking. Challenge yourself and try to collect specific stars at unconventional scale values.
+
+The .bps patch file can be downloaded in the **GitHub Releases** tab.
+
 # UltraSM64
 
 - This repo contains a full decompilation of Super Mario 64 (J), (U), (E), and (SH).
