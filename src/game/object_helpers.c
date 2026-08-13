@@ -2004,6 +2004,12 @@ s32 cur_obj_follow_path(UNUSED s32 unusedArg) {
         targetWaypoint = startWaypoint;
     }
 
+    f32 oldY1 = targetWaypoint->pos[1];// * gLevelScale[1];
+    f32 oldY2 = lastWaypoint->pos[1];
+
+    targetWaypoint->pos[1] *= gLevelScale[1];
+    lastWaypoint->pos[1] *= gLevelScale[1];
+
     o->oPathedPrevWaypointFlags = lastWaypoint->flags | WAYPOINT_FLAGS_INITIALIZED;
 
     prevToNextX = targetWaypoint->pos[0] - lastWaypoint->pos[0];
@@ -2027,6 +2033,9 @@ s32 cur_obj_follow_path(UNUSED s32 unusedArg) {
             return PATH_REACHED_WAYPOINT;
         }
     }
+
+    targetWaypoint->pos[1] *= oldY1;
+    lastWaypoint->pos[1] *= oldY2;
 
     return PATH_NONE;
 }

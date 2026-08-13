@@ -38,6 +38,8 @@ void bhv_ship_part_3_loop(void) {
     if (gMarioObject->oPosY > 1000.0f) {
         cur_obj_play_sound_1(SOUND_ENV_BOAT_ROCKING1);
     }
+
+    o->header.gfx.scale[1] = gLevelScale[1];
 }
 
 void bhv_jrb_sliding_box_loop(void) {

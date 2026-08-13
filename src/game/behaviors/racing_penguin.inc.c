@@ -89,6 +89,13 @@ static void racing_penguin_act_race(void) {
         if (cur_obj_check_if_at_animation_end() && (o->oMoveFlags & OBJ_MOVE_MASK_ON_GROUND)) {
             spawn_object_relative_with_scale(0, 0, -100, 0, 4.0f, o, MODEL_SMOKE, bhvWhitePuffSmoke2);
         }
+
+        // Cheating; but it's just lame when the penguin falls off the slide in scaled levels : /
+        f32 fell = find_floor_height(o->oPosX, o->oPosY + (1500 * gLevelScale[1]), o->oPosZ);
+        if (fell > o->oPosY) {
+            o->oPosY = fell;
+            o->oVelY = 10.0f;
+        }
     }
 
     if (mario_is_in_air_action()) {

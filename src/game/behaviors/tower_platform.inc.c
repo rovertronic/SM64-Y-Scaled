@@ -16,7 +16,7 @@ void bhv_wf_elevator_tower_platform_loop(void) {
 
         case 1:
             cur_obj_play_sound_1(SOUND_ENV_ELEVATOR1);
-            if (o->oTimer > 140) {
+            if (o->oTimer > 140 * gLevelScale[1]) {
                 o->oAction++;
             } else {
                 o->oPosY += 5.0f;
@@ -31,7 +31,7 @@ void bhv_wf_elevator_tower_platform_loop(void) {
 
         case 3:
             cur_obj_play_sound_1(SOUND_ENV_ELEVATOR1);
-            if (o->oTimer > 140) {
+            if (o->oTimer > 140 * gLevelScale[1]) {
                 o->oAction = 0;
             } else {
                 o->oPosY -= 5.0f;
@@ -81,7 +81,7 @@ void spawn_and_init_wf_platforms(s16 a, const BehaviorScript *bhv) {
 
     platform->oMoveAngleYaw = yaw;
     platform->oPosX += o->oPlatformSpawnerUnk100 * sins(yaw);
-    platform->oPosY += 100 * o->oPlatformSpawnerUnkF4;
+    platform->oPosY += 100 * o->oPlatformSpawnerUnkF4 * gLevelScale[1];
     platform->oPosZ += o->oPlatformSpawnerUnk100 * coss(yaw);
     platform->oPlatformUnk110 = o->oPlatformSpawnerUnk104;
     platform->oPlatformUnk10C = o->oPlatformSpawnerUnk108;
