@@ -24,6 +24,7 @@
 #include "sound_init.h"
 #include "rumble_init.h"
 #include "ingame_menu.h"
+#include "buffers/buffers.h"
 
 #define INT_GROUND_POUND_OR_TWIRL (1 << 0) // 0x01
 #define INT_PUNCH                 (1 << 1) // 0x02
@@ -810,6 +811,27 @@ u32 interact_star_or_key(struct MarioState *m, UNUSED u32 interactType, struct O
 
         starIndex = (o->oBehParams >> 24) & 0x1F;
         save_file_collect_star_or_key(m->numCoins, starIndex);
+
+        switch (gCurrLevelNum) {
+            case LEVEL_BOWSER_1:
+            case LEVEL_BOWSER_2:
+            case LEVEL_BOWSER_3:
+            case LEVEL_CASTLE:
+            case LEVEL_CASTLE_GROUNDS:
+            break;
+
+            default:;
+                int cid = COURSE_NUM_TO_INDEX(gCurrCourseNum);
+
+                int intscale = (gLevelScale[1] * 20.0f);
+                if (intscale > gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseHi[cid][starIndex]) {
+                    gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseHi[cid][starIndex] = intscale;
+                }
+                if (intscale < gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseLo[cid][starIndex]) {
+                    gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseLo[cid][starIndex] = intscale;
+                }
+                break;
+        }
 
         m->numStars =
             save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);

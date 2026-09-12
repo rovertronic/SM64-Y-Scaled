@@ -37,6 +37,8 @@ struct SaveFile {
     // The most significant bit of the byte *following* each course is set if the
     // cannon is open.
     u8 courseStars[COURSE_COUNT];
+    s8 courseHi[COURSE_COUNT][7];
+    s8 courseLo[COURSE_COUNT][7];
 
     u8 courseCoinScores[COURSE_STAGES_COUNT];
 

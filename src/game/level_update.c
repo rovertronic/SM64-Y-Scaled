@@ -28,6 +28,7 @@
 #include "level_table.h"
 #include "course_table.h"
 #include "rumble_init.h"
+#include "buffers/buffers.h"
 
 #define PLAY_MODE_NORMAL 0
 #define PLAY_MODE_PAUSED 2
@@ -1196,6 +1197,15 @@ s32 init_level(void) {
             reset_camera(gCurrentArea->camera);
 
             set_mario_action(gMarioState, ACT_IDLE, 0);
+
+            if (!save_file_exists(gCurrSaveFileNum -1)) {
+                for (int i = 0; i < COURSE_COUNT; i++) {
+                    for (int j = 0; j < 7; j++) {
+                        gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseHi[i][j] = 20;
+                        gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseLo[i][j] = 20;
+                    }
+                }
+            }
             /*
             if (gCurrDemoInput != NULL) {
                 set_mario_action(gMarioState, ACT_IDLE, 0);

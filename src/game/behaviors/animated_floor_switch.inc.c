@@ -75,5 +75,8 @@ void bhv_animates_on_floor_switch_press_loop(void) {
 
     cur_obj_set_model(D_80331A54[o->oBehParams2ndByte][o->oFloorSwitchPressAnimationUnkF8 / 2].model);
     o->header.gfx.scale[1] = gLevelScale[1];
-    o->oCollisionDistance *= gLevelScale[1];
+
+    if (gLevelScale[1] > 1.0f) {
+        o->oCollisionDistance *= gLevelScale[1];
+    }
 }

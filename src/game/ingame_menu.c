@@ -22,6 +22,7 @@
 #include "sm64.h"
 #include "text_strings.h"
 #include "types.h"
+#include "buffers/buffers.h"
 
 #ifdef VERSION_EU
 #undef LANGUAGE_FUNCTION
@@ -3304,7 +3305,7 @@ void render_y_scaled_menu(void) {
     // Debug Fly
     toggleStr = "Off";
     if (gYscaledMenuFlyOption) {
-        toggleStr = "On (Will disable save)";
+        toggleStr = "On";
     }
 
     sprintf(str,"D-Pad Up to Noclip: %s",toggleStr);
@@ -3313,11 +3314,54 @@ void render_y_scaled_menu(void) {
     // Unlock All
     toggleStr = "Off";
     if (gYscaledMenuUnlockOption) {
-        toggleStr = "On (Will disable save)";
+        toggleStr = "On";
     }
 
     sprintf(str,"Unlock All Doors: %s",toggleStr);
     print_generic_string_ascii(YSCALE_MENU_X,80,str);
+
+
+    int max_level_stars = 7;
+    switch (gCurrLevelNum) {
+        case LEVEL_BOWSER_1:
+        case LEVEL_BOWSER_2:
+        case LEVEL_BOWSER_3:
+        case LEVEL_CASTLE:
+        case LEVEL_CASTLE_GROUNDS:
+        max_level_stars = 0;
+        break;
+
+        case LEVEL_BITDW:
+        case LEVEL_BITS:
+        case LEVEL_BITFS:
+        case LEVEL_WMOTR:
+        case LEVEL_COTMC:
+        case LEVEL_TOTWC:
+        case LEVEL_VCUTM:
+        max_level_stars = 1;
+        break;
+
+        case LEVEL_PSS:
+        max_level_stars = 2;
+    }
+
+    // Star Display
+    u8 textStar[] = { TEXT_STAR };
+    u8 text_no_star[] = { TEXT_UNFILLED_STAR };
+    print_generic_string_ascii(240,200,"Hi    Lo");
+    for (int i = 0; i < max_level_stars; i++) {
+        if (gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseStars[COURSE_NUM_TO_INDEX(gCurrCourseNum)] >> i & 1) {
+            print_generic_string(220, 180 - (i*20), textStar);
+        } else {
+            print_generic_string(220, 180 - (i*20), text_no_star);
+        }
+
+        sprintf(str,"%.1f", gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseHi[COURSE_NUM_TO_INDEX(gCurrCourseNum)][i] / 20.0f);
+        print_generic_string_ascii(240, 180 - (i*20), str);
+
+        sprintf(str,"%.1f", gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseLo[COURSE_NUM_TO_INDEX(gCurrCourseNum)][i] / 20.0f);
+        print_generic_string_ascii(270, 180 - (i*20), str);
+    }
 
     create_dl_translation_matrix(MENU_MTX_PUSH, 30, 160 - (sYScaledMenuIndex * 20), 0);
 
