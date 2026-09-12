@@ -32,6 +32,7 @@
 #include "save_file.h"
 #include "sound_init.h"
 #include "rumble_init.h"
+#include "ingame_menu.h"
 
 u32 unused80339F10;
 u8 unused80339F1C[20];
@@ -1706,15 +1707,13 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         mario_handle_special_floors(gMarioState);
         mario_process_interactions(gMarioState);
 
-        /*
         if (
-            (gMarioState->controller->buttonDown & U_JPAD) &&
-            !(gMarioState->controller->buttonDown & L_TRIG)
+            (gMarioState->controller->buttonPressed & U_JPAD) &&
+            (gYscaledMenuFlyOption)
         ) {
             set_camera_mode(gMarioState->area->camera, CAMERA_MODE_8_DIRECTIONS, 1);
             set_mario_action(gMarioState, ACT_DEBUG_FREE_MOVE, 0);
         }
-        */
 
         // If Mario is OOB, stop executing actions.
         if (gMarioState->floor == NULL) {

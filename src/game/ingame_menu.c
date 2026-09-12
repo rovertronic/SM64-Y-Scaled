@@ -2687,9 +2687,18 @@ s16 render_pause_courses_and_castle(void) {
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, gDialogTextAlpha);
-    print_generic_string_ascii(20,179,"R: Y-Scaled Menu");
+    print_generic_string_ascii(22,178,"R: Y-Scaled Menu");
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
     print_generic_string_ascii(20,180,"R: Y-Scaled Menu");
+
+    if (gYscaledDisableSave) {
+        gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, gDialogTextAlpha);
+        print_generic_string_ascii(142,178,"Saving disabled due to cheats.");
+
+        gDPSetEnvColor(gDisplayListHead++, 255, 0, 0, gDialogTextAlpha);
+        print_generic_string_ascii(140,180,"Saving disabled due to cheats.");
+    }
+
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 
     if (gDialogTextAlpha < 250) {
@@ -3169,6 +3178,9 @@ s8 sYScaledMenuIndex = 0;
 s32 sYScaledLeftTimer = 0;
 s32 sYScaledRightTimer = 0;
 s32 gYscaledMenuCameraOption = 0;
+s32 gYscaledMenuFlyOption = 0;
+s32 gYscaledMenuUnlockOption = 0;
+s32 gYscaledDisableSave = 0;
 
 s32 gYScaledMenuYOption = 20;
 s32 gYScaledMenuYOptionOld = 20; // Used to check for change
@@ -3179,10 +3191,11 @@ void init_y_scaled_menu(void) {
 }
 
 #define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
+#define YSCALE_MENU_X 50
 
 void render_y_scaled_menu(void) {
     // Control Vertical
-    handle_menu_scrolling(MENU_SCROLL_VERTICAL, &sYScaledMenuIndex, 0, 2);
+    handle_menu_scrolling(MENU_SCROLL_VERTICAL, &sYScaledMenuIndex, 0, 4);
 
     switch(sYScaledMenuIndex) {
         case 0:
@@ -3193,6 +3206,12 @@ void render_y_scaled_menu(void) {
             break;
         case 2:
             sYScaledChangeVariable = &gYscaledMenuCameraOption;
+            break;
+        case 3:
+            sYScaledChangeVariable = &gYscaledMenuFlyOption;
+            break;
+        case 4:
+            sYScaledChangeVariable = &gYscaledMenuUnlockOption;
             break;
     }
 
@@ -3223,11 +3242,17 @@ void render_y_scaled_menu(void) {
     }
 
     gYscaledMenuCameraOption = CLAMP(gYscaledMenuCameraOption,0,1);
+    gYscaledMenuFlyOption = CLAMP(gYscaledMenuFlyOption,0,1);
+    gYscaledMenuUnlockOption = CLAMP(gYscaledMenuUnlockOption,0,1);
 
     // Control Confirm
     if (gPlayer3Controller->buttonPressed & (A_BUTTON | START_BUTTON)) {
         switch(sYScaledMenuIndex) {
             case 0:
+                if (gYscaledMenuFlyOption || gYscaledMenuUnlockOption) {
+                    gYscaledDisableSave = TRUE;
+                }
+
                 if (gYScaledMenuYOption != gYScaledMenuYOptionOld) {
                     u8 node = 0x0A;
                     switch(gCurrLevelNum) {
@@ -3255,8 +3280,9 @@ void render_y_scaled_menu(void) {
     shade_screen();
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
-    print_generic_string_ascii(120,120,"Return");
+    print_generic_string_ascii(YSCALE_MENU_X,160,"Return");
 
+    // Scale
     char str[100];
     char * unstableStr = "";
     if (ABS(gYScaledMenuYOption) > 80) {
@@ -3264,17 +3290,36 @@ void render_y_scaled_menu(void) {
     }
     f32 displayFloat = gYScaledMenuYOption * .05f;
     sprintf(str,"Y Scale: %.2f%s",displayFloat,unstableStr);
-    print_generic_string_ascii(120,100,str);
+    print_generic_string_ascii(YSCALE_MENU_X,140,str);
 
+    // Parallel Cam
     char * toggleStr = "Off";
     if (gYscaledMenuCameraOption) {
         toggleStr = "On";
     }
 
     sprintf(str,"Parallel Lakitu Cam: %s",toggleStr);
-    print_generic_string_ascii(120,80,str);
+    print_generic_string_ascii(YSCALE_MENU_X,120,str);
 
-    create_dl_translation_matrix(MENU_MTX_PUSH, 100, 120 - (sYScaledMenuIndex * 20), 0);
+    // Debug Fly
+    toggleStr = "Off";
+    if (gYscaledMenuFlyOption) {
+        toggleStr = "On (Will disable save)";
+    }
+
+    sprintf(str,"D-Pad Up to Noclip: %s",toggleStr);
+    print_generic_string_ascii(YSCALE_MENU_X,100,str);
+
+    // Unlock All
+    toggleStr = "Off";
+    if (gYscaledMenuUnlockOption) {
+        toggleStr = "On (Will disable save)";
+    }
+
+    sprintf(str,"Unlock All Doors: %s",toggleStr);
+    print_generic_string_ascii(YSCALE_MENU_X,80,str);
+
+    create_dl_translation_matrix(MENU_MTX_PUSH, 30, 160 - (sYScaledMenuIndex * 20), 0);
 
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
     gSPDisplayList(gDisplayListHead++, dl_draw_triangle);

@@ -14,6 +14,7 @@
 #ifdef SRAM
 #include "sram.h"
 #endif
+#include "ingame_menu.h"
 
 #define ALIGN4(val) (((val) + 0x3) & ~0x3)
 
@@ -84,6 +85,8 @@ static s32 read_eeprom_data(void *buffer, s32 size) {
  * osEepromLongWrite. Unlike read_eeprom_data, return 1 if EEPROM isn't loaded.
  */
 static s32 write_eeprom_data(void *buffer, s32 size) {
+    if (gYscaledDisableSave) {return 0;}
+
     s32 status = 1;
 
     if (gEepromProbe != 0) {
@@ -141,6 +144,8 @@ static s32 read_eeprom_data(void *buffer, s32 size) {
  * nuPiWriteSram. Unlike read_eeprom_data, return 1 if SRAM isn't loaded.
  */
 static s32 write_eeprom_data(void *buffer, s32 size) {
+    if (gYscaledDisableSave) {return 0;}
+    
     s32 status = 1;
 
     if (gSramProbe != 0) {
