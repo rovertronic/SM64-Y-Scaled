@@ -3287,7 +3287,7 @@ void render_y_scaled_menu(void) {
     char str[100];
     char * unstableStr = "";
     if (ABS(gYScaledMenuYOption) > 80) {
-        unstableStr = " (WARNING: Unstable)";
+        unstableStr = " (UNSTABLE)";
     }
     f32 displayFloat = gYScaledMenuYOption * .05f;
     sprintf(str,"Y Scale: %.2f%s",displayFloat,unstableStr);
@@ -3338,6 +3338,7 @@ void render_y_scaled_menu(void) {
         case LEVEL_COTMC:
         case LEVEL_TOTWC:
         case LEVEL_VCUTM:
+        case LEVEL_SA:
         max_level_stars = 1;
         break;
 
@@ -3348,7 +3349,9 @@ void render_y_scaled_menu(void) {
     // Star Display
     u8 textStar[] = { TEXT_STAR };
     u8 text_no_star[] = { TEXT_UNFILLED_STAR };
-    print_generic_string_ascii(240,200,"Hi    Lo");
+    if (max_level_stars > 0) {
+        print_generic_string_ascii(240,200,"Hi    Lo");
+    }
     for (int i = 0; i < max_level_stars; i++) {
         if (gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseStars[COURSE_NUM_TO_INDEX(gCurrCourseNum)] >> i & 1) {
             print_generic_string(220, 180 - (i*20), textStar);
